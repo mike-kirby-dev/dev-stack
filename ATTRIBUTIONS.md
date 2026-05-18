@@ -38,6 +38,7 @@ This repo is a curated, modified subset of three upstream Claude Code skill pack
   - `skills/gsd-execute-phase/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-execute-phase/SKILL.md`) + workflow bodies `workflows/{execute-phase,execute-plan,transition,node-repair}.md`
   - `skills/gsd-code-review/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-code-review/SKILL.md`) + workflow body `workflows/code-review.md`
   - `skills/gsd-code-review-fix/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-code-review-fix/SKILL.md`) + workflow body `workflows/code-review-fix.md`
+  - `skills/gsd-verify-work/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-verify-work/SKILL.md`) + workflow bodies `workflows/{verify-work,diagnose-issues,transition}.md`
 - **Modifications:**
   - `gsd-discuss-phase`: verbatim copy; added attribution header on SKILL.md only (workflow bodies copied verbatim, no header).
   - `gsd-plan-phase`: verbatim copy; added attribution header on SKILL.md only.
@@ -45,6 +46,7 @@ This repo is a curated, modified subset of three upstream Claude Code skill pack
   - `gsd-execute-phase`: verbatim copy; added attribution header on SKILL.md only. Bundled cross-referenced workflows (`execute-plan.md`, `transition.md`, `node-repair.md`) alongside the main `execute-phase.md` to keep the skill self-contained.
   - `gsd-code-review`: verbatim copy; added attribution header on SKILL.md only.
   - `gsd-code-review-fix`: verbatim copy; added attribution header on SKILL.md only.
+  - `gsd-verify-work`: verbatim copy; added attribution header on SKILL.md only. Bundled cross-referenced `diagnose-issues.md` (verify→diagnose handoff) and `transition.md` workflows alongside the main `verify-work.md`. Note: `diagnose-issues.md` is also bundled under `skills/gsd-diagnose-issues/` (where it's the primary workflow body) — duplicated by design so each skill is self-contained.
 
 ## Superpowers — Jesse Vincent
 
