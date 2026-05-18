@@ -35,6 +35,7 @@ declare -a GSTACK_FILES=(
     "skills/gs-plan-ceo-review/SKILL.md|plan-ceo-review/SKILL.md"
     "skills/gs-plan-eng-review/SKILL.md|plan-eng-review/SKILL.md"
     "skills/gs-plan-design-review/SKILL.md|plan-design-review/SKILL.md"
+    "skills/gs-canary/SKILL.md|canary/SKILL.md"
 )
 
 declare -a GSD_FILES=()  # Populated in later passes

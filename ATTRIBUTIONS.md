@@ -15,13 +15,15 @@ This repo is a curated, modified subset of three upstream Claude Code skill pack
   - `skills/gs-plan-ceo-review/SKILL.md` (from upstream `plan-ceo-review/SKILL.md`)
   - `skills/gs-plan-eng-review/SKILL.md` (from upstream `plan-eng-review/SKILL.md`)
   - `skills/gs-plan-design-review/SKILL.md` (from upstream `plan-design-review/SKILL.md`)
+  - `skills/gs-canary/SKILL.md` (from upstream `canary/SKILL.md`) — PHASE-LEVEL, not milestone-only. Fires after every deploy via `verify-deploy.sh`.
 - **Modifications:**
   - Stripped gstack preamble blocks (`Preamble (run first)`, `Plan Mode Safe Operations`, `Skill Invocation During Plan Mode`, `Skill routing`, `AskUserQuestion Format`, `Artifacts Sync`, `Model-Specific Behavioral Patch`, `Voice`, `Context Recovery`, `Writing Style`, `Operational Self-Improvement`, `Completion Status Protocol`, `Telemetry`, `Plan Status Footer`, `Repo Ownership`, `Search Before Building`, `SETUP (browse)`) — these depend on the missing `~/.claude/skills/gstack/bin/gstack-*` toolchain and don't function in our environment.
   - Stripped trailing `GSTACK REVIEW REPORT` and `EXIT PLAN MODE GATE` sections (depend on gstack plan-mode infrastructure we don't run).
-  - Stripped `triggers` and `voice-triggers` frontmatter lists to enforce milestone-only invocation.
-  - Appended `(MILESTONE-LEVEL ONLY — do not invoke per-phase)` to each skill's description.
+  - Stripped `triggers` and `voice-triggers` frontmatter lists to enforce milestone-only invocation (gs-canary keeps no triggers list but is explicitly tagged phase-level in its description).
+  - Appended `(MILESTONE-LEVEL ONLY — do not invoke per-phase)` to each milestone-only skill's description. `gs-canary` instead appends `(PHASE-LEVEL — fires after every deploy, not milestone-only. Wired into ~/dev-management/scripts/verify-deploy.sh post-Tier-B pass; can also be invoked manually with /canary <url>.)`.
   - `gs-office-hours`: changed design doc save path from `~/.gstack/projects/{slug}/{user}-{branch}-design-{datetime}.md` to `.planning/decisions/YYYY-MM-DD-<topic>.md` (matches our GSD tree convention).
   - `gs-plan-design-review`: replaced the designer-binary `Step 0.5: Visual Mockups` section with a text-only `Variant Descriptions` stub. The 7 rated dimensions and AI Slop blacklist are preserved.
+  - `gs-canary`: replaced gstack browse-binary resolution (`$_ROOT/.claude/skills/gstack/browse/dist/browse` → `$HOME/.claude/skills/gstack/browse/dist/browse`) with the dev-stack resolution pattern: PATH → `~/.local/bin/browse` → `~/skills-stack/browse/dist/browse`. Matches `~/dev-management/scripts/verify-deploy.sh` canary block (lines 785-880). Changed report save path from `.gstack/canary-reports/` to `.canary-reports/` so the skill works outside gstack-managed projects. Stripped the upstream `Phase 1` `gstack-slug` invocation and the JSONL telemetry write in Phase 6 (both depend on missing gstack bin). Added an explicit "flag-only when invoked from verify-deploy.sh" rule so the model doesn't trigger auto-rollback for canary findings — Tier A/B failures keep their existing auto-rollback path.
 
 ## GSD v1 — TÂCHES (gsd-build)
 
@@ -93,5 +95,5 @@ This repo is a curated, modified subset of three upstream Claude Code skill pack
   - **Added `browse/README.md`** — attribution header pointing at this file, build instructions, list of skills that depend on the binary.
   - All `.ts` source files, the helper scripts under `bin/`, the build script under `scripts/`, and the test files are **verbatim copies** of upstream — no per-file modifications. The component is intended to track upstream closely; if upstream changes the source structure, the fork should re-vendor rather than maintain divergent edits.
 - **Skills that depend on this binary:**
-  - `gs-canary` — post-deploy monitoring (lands in Pass 4 of the dev-stack build, will live at `skills/gs-canary/`).
+  - `gs-canary` — post-deploy monitoring (`skills/gs-canary/SKILL.md`, landed in Pass 4 of the dev-stack build).
   - Future: `gs-qa` and `gs-benchmark` would depend on it too if ever added — both were dropped from the dev-stack cherry-pick (`gs-benchmark` explicitly dropped per `life/resources/fork-stack-locks-2026-05-18.md`; `gs-qa` not in the locked skill list as of 2026-05-18).
