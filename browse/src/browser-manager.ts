@@ -25,6 +25,20 @@ export type { RefEntry };
 // Re-export TabSession for consumers
 export { TabSession };
 
+// Chromium refuses to launch as root with the sandbox enabled, by design.
+// Detect environments where the sandbox can't work: explicit CI/CONTAINER
+// env vars, OR running as uid 0 on Linux/macOS (typical for our agent-cto
+// daemon which runs as root in a container).
+// Added 2026-05-18 (DEVMGMT-281 follow-up) for gs-canary auto-fire from
+// verify-deploy.sh which runs as root via deploy-watcher daemon.
+function needsNoSandbox(): boolean {
+  if (process.env.CI || process.env.CONTAINER) return true;
+  if (process.platform === 'win32') return false;
+  // process.getuid only exists on POSIX; guard for type safety.
+  const getuid = (process as NodeJS.Process & { getuid?: () => number }).getuid;
+  return typeof getuid === 'function' && getuid() === 0;
+}
+
 export interface BrowserState {
   cookies: Cookie[];
   pages: Array<{
@@ -182,10 +196,10 @@ export class BrowserManager {
     const launchArgs: string[] = [];
     let useHeadless = true;
 
-    // Docker/CI: Chromium sandbox requires unprivileged user namespaces which
-    // are typically disabled in containers. Detect container environment and
-    // add --no-sandbox automatically.
-    if (process.env.CI || process.env.CONTAINER) {
+    // Docker/CI/root: Chromium sandbox requires unprivileged user namespaces
+    // which are typically disabled in containers AND refuses to launch as
+    // root entirely. needsNoSandbox() covers CI, CONTAINER, AND root-uid.
+    if (needsNoSandbox()) {
       launchArgs.push('--no-sandbox');
     }
 
@@ -205,7 +219,8 @@ export class BrowserManager {
       // On Windows, Chromium's sandbox fails when the server is spawned through
       // the Bun→Node process chain (GitHub #276). Disable it — local daemon
       // browsing user-specified URLs has marginal sandbox benefit.
-      chromiumSandbox: process.platform !== 'win32',
+      // Also disable when needsNoSandbox() (CI/CONTAINER/root) — same reasoning.
+      chromiumSandbox: process.platform !== 'win32' && !needsNoSandbox(),
       ...(launchArgs.length > 0 ? { args: launchArgs } : {}),
     });
 
@@ -257,6 +272,7 @@ export class BrowserManager {
       // Sites like Google and NYTimes check this to block automation browsers.
       '--disable-blink-features=AutomationControlled',
     ];
+    if (needsNoSandbox()) launchArgs.push('--no-sandbox');
     if (extensionPath) {
       launchArgs.push(`--disable-extensions-except=${extensionPath}`);
       launchArgs.push(`--load-extension=${extensionPath}`);
@@ -1148,6 +1164,7 @@ export class BrowserManager {
       const path = require('path');
       const extensionPath = this.findExtensionPath();
       const launchArgs = ['--hide-crash-restore-bubble'];
+      if (needsNoSandbox()) launchArgs.push('--no-sandbox');
       if (extensionPath) {
         launchArgs.push(`--disable-extensions-except=${extensionPath}`);
         launchArgs.push(`--load-extension=${extensionPath}`);
