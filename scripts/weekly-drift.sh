@@ -212,6 +212,15 @@ mv "$REPORT.final" "$REPORT"
 # Force DM (NOT CICD group) by explicitly emptying CICD_GROUP_CHAT_ID.
 export CICD_GROUP_CHAT_ID=""
 
+# Skip notify entirely when there's nothing to report — silence is the
+# correct signal on a "no upstream movement" week. Only fire when an
+# upstream has actually changed.
+if [ "${total_changed:-0}" -eq 0 ]; then
+    echo "weekly-drift: no upstream movement — Telegram suppressed. Report at: $REPORT" >&2
+    cp "$REPORT" /tmp/dev-stack-drift-last.md
+    exit 0
+fi
+
 if [ -x "$NOTIFY_SCRIPT" ]; then
     # Pass report as file or inline depending on size
     report_size=$(wc -c < "$REPORT")
