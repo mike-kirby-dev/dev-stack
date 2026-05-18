@@ -30,8 +30,11 @@ This repo is a curated, modified subset of three upstream Claude Code skill pack
 - **Original author / copyright:** © Lex Christopherson / TÂCHES
 - **Fork date:** 2026-05-18
 - **Upstream commit SHA at fork:** `cb154569cf2c174567edde737bb41ec01e540f0f`
-- **Skills taken from this upstream:** *(none in Pass 1 — phase-level GSD skills land in a later pass)*
-- **Modifications:** *(none yet)*
+- **Source-of-record note:** GSD v1 is locally installed at `/root/.claude/get-shit-done/` (`skills/` for slash-command SKILL.md files; `workflows/` for invoked workflow bodies). The cherry-pick used those local paths as "upstream" rather than the public repo because the locally installed copy is the version we actually run. Per-file attribution headers point at the local paths; SHAs above are the upstream public-repo SHA the local install was built from.
+- **Skills taken from this upstream:**
+  - `skills/gsd-discuss-phase/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-discuss-phase/SKILL.md`) + workflow bodies `workflows/{discuss-phase,discuss-phase-assumptions,discuss-phase-power}.md`
+- **Modifications:**
+  - `gsd-discuss-phase`: verbatim copy; added attribution header on SKILL.md only (workflow bodies copied verbatim, no header).
 
 ## Superpowers — Jesse Vincent
 
