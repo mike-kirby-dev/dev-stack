@@ -61,6 +61,7 @@ This repo is a curated, modified subset of three upstream Claude Code skill pack
 - **Upstream commit SHA at fork:** `f2cbfbefebbfef77321e4c9abc9e949826bea9d7`
 - **Skills taken from this upstream:**
   - `skills/sp-brainstorming/SKILL.md` (from upstream `skills/brainstorming/SKILL.md`)
+  - `skills/sp-subagent-driven-development/SKILL.md` (from upstream `skills/subagent-driven-development/SKILL.md`) + prompt template deps `implementer-prompt.md`, `spec-reviewer-prompt.md`, `code-quality-reviewer-prompt.md`
 - **Modifications:**
-  - Appended `(MILESTONE-LEVEL ONLY — do not invoke per-phase)` to description.
-  - Changed default save path from `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` to `.planning/specs/YYYY-MM-DD-<topic>.md` (matches our GSD tree convention).
+  - `sp-brainstorming`: appended `(MILESTONE-LEVEL ONLY — do not invoke per-phase)` to description. Changed default save path from `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` to `.planning/specs/YYYY-MM-DD-<topic>.md` (matches our GSD tree convention).
+  - `sp-subagent-driven-development`: added attribution header. **Inserted an `## Optionality: task-size-gated review tiers (fork modification)` section** before the `When to Use` block. It defines a small-task threshold (under ~50 lines AND under 3 files) below which the orchestrator skips the code-quality reviewer (single-tier review = spec-compliance only); larger or sensitive tasks still get the full two-tier upstream pattern. The orchestrator (`gsd-execute-phase` or human) reads task scope from the plan and picks the tier before dispatching the implementer. The spec-compliance reviewer always runs. Prompt template deps (`implementer-prompt.md`, `spec-reviewer-prompt.md`, `code-quality-reviewer-prompt.md`) copied verbatim alongside the SKILL.md.
