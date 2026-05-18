@@ -34,9 +34,11 @@ This repo is a curated, modified subset of three upstream Claude Code skill pack
 - **Skills taken from this upstream:**
   - `skills/gsd-discuss-phase/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-discuss-phase/SKILL.md`) + workflow bodies `workflows/{discuss-phase,discuss-phase-assumptions,discuss-phase-power}.md`
   - `skills/gsd-plan-phase/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-plan-phase/SKILL.md`) + workflow body `workflows/plan-phase.md`
+  - `skills/gsd-quick/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-quick/SKILL.md`) + workflow body `workflows/quick.md`
 - **Modifications:**
   - `gsd-discuss-phase`: verbatim copy; added attribution header on SKILL.md only (workflow bodies copied verbatim, no header).
   - `gsd-plan-phase`: verbatim copy; added attribution header on SKILL.md only.
+  - `gsd-quick`: verbatim copy; added attribution header on SKILL.md only.
 
 ## Superpowers — Jesse Vincent
 
