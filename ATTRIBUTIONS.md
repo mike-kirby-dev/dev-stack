@@ -39,6 +39,7 @@ This repo is a curated, modified subset of three upstream Claude Code skill pack
   - `skills/gsd-code-review/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-code-review/SKILL.md`) + workflow body `workflows/code-review.md`
   - `skills/gsd-code-review-fix/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-code-review-fix/SKILL.md`) + workflow body `workflows/code-review-fix.md`
   - `skills/gsd-verify-work/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-verify-work/SKILL.md`) + workflow bodies `workflows/{verify-work,diagnose-issues,transition}.md`
+  - `skills/gsd-ship/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-ship/SKILL.md`) + workflow body `workflows/ship.md`
 - **Modifications:**
   - `gsd-discuss-phase`: verbatim copy; added attribution header on SKILL.md only (workflow bodies copied verbatim, no header).
   - `gsd-plan-phase`: verbatim copy; added attribution header on SKILL.md only.
@@ -47,6 +48,7 @@ This repo is a curated, modified subset of three upstream Claude Code skill pack
   - `gsd-code-review`: verbatim copy; added attribution header on SKILL.md only.
   - `gsd-code-review-fix`: verbatim copy; added attribution header on SKILL.md only.
   - `gsd-verify-work`: verbatim copy; added attribution header on SKILL.md only. Bundled cross-referenced `diagnose-issues.md` (verify→diagnose handoff) and `transition.md` workflows alongside the main `verify-work.md`. Note: `diagnose-issues.md` is also bundled under `skills/gsd-diagnose-issues/` (where it's the primary workflow body) — duplicated by design so each skill is self-contained.
+  - `gsd-ship`: verbatim copy; added attribution header on SKILL.md only.
 
 ## Superpowers — Jesse Vincent
 
