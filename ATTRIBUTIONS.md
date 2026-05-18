@@ -35,10 +35,12 @@ This repo is a curated, modified subset of three upstream Claude Code skill pack
   - `skills/gsd-discuss-phase/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-discuss-phase/SKILL.md`) + workflow bodies `workflows/{discuss-phase,discuss-phase-assumptions,discuss-phase-power}.md`
   - `skills/gsd-plan-phase/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-plan-phase/SKILL.md`) + workflow body `workflows/plan-phase.md`
   - `skills/gsd-quick/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-quick/SKILL.md`) + workflow body `workflows/quick.md`
+  - `skills/gsd-execute-phase/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-execute-phase/SKILL.md`) + workflow bodies `workflows/{execute-phase,execute-plan,transition,node-repair}.md`
 - **Modifications:**
   - `gsd-discuss-phase`: verbatim copy; added attribution header on SKILL.md only (workflow bodies copied verbatim, no header).
   - `gsd-plan-phase`: verbatim copy; added attribution header on SKILL.md only.
   - `gsd-quick`: verbatim copy; added attribution header on SKILL.md only.
+  - `gsd-execute-phase`: verbatim copy; added attribution header on SKILL.md only. Bundled cross-referenced workflows (`execute-plan.md`, `transition.md`, `node-repair.md`) alongside the main `execute-phase.md` to keep the skill self-contained.
 
 ## Superpowers — Jesse Vincent
 
