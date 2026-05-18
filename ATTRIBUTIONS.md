@@ -40,6 +40,7 @@ This repo is a curated, modified subset of three upstream Claude Code skill pack
   - `skills/gsd-code-review-fix/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-code-review-fix/SKILL.md`) + workflow body `workflows/code-review-fix.md`
   - `skills/gsd-verify-work/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-verify-work/SKILL.md`) + workflow bodies `workflows/{verify-work,diagnose-issues,transition}.md`
   - `skills/gsd-ship/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-ship/SKILL.md`) + workflow body `workflows/ship.md`
+  - `skills/gsd-debug/SKILL.md` (from `/root/.claude/get-shit-done/skills/gsd-debug/SKILL.md`) + workflow body `workflows/diagnose-issues.md` — **slash command renamed to `/gsd-diagnose-issues`** via `name:` frontmatter rewrite. Directory name kept as `gsd-debug/` (matches upstream package name → drift-detection-friendly).
 - **Modifications:**
   - `gsd-discuss-phase`: verbatim copy; added attribution header on SKILL.md only (workflow bodies copied verbatim, no header).
   - `gsd-plan-phase`: verbatim copy; added attribution header on SKILL.md only.
@@ -47,8 +48,9 @@ This repo is a curated, modified subset of three upstream Claude Code skill pack
   - `gsd-execute-phase`: verbatim copy; added attribution header on SKILL.md only. Bundled cross-referenced workflows (`execute-plan.md`, `transition.md`, `node-repair.md`) alongside the main `execute-phase.md` to keep the skill self-contained.
   - `gsd-code-review`: verbatim copy; added attribution header on SKILL.md only.
   - `gsd-code-review-fix`: verbatim copy; added attribution header on SKILL.md only.
-  - `gsd-verify-work`: verbatim copy; added attribution header on SKILL.md only. Bundled cross-referenced `diagnose-issues.md` (verify→diagnose handoff) and `transition.md` workflows alongside the main `verify-work.md`. Note: `diagnose-issues.md` is also bundled under `skills/gsd-diagnose-issues/` (where it's the primary workflow body) — duplicated by design so each skill is self-contained.
+  - `gsd-verify-work`: verbatim copy; added attribution header on SKILL.md only. Bundled cross-referenced `diagnose-issues.md` (verify→diagnose handoff) and `transition.md` workflows alongside the main `verify-work.md`. Note: `diagnose-issues.md` is also bundled under `skills/gsd-debug/` (where it's the primary workflow body) — duplicated by design so each skill is self-contained.
   - `gsd-ship`: verbatim copy; added attribution header on SKILL.md only.
+  - `gsd-debug` (slash command `/gsd-diagnose-issues`): added attribution header. Updated `name:` frontmatter from `gsd-debug` to `gsd-diagnose-issues` so the slash command reflects the actual workflow scope (UAT-gap diagnosis, not general debugging). Updated `description:` to clarify scope and point at `sp-systematic-debugging` for general debugging. Added a `> Note on scope.` paragraph at the top of the SKILL.md body explaining the rename. Workflow body (`diagnose-issues.md`) copied verbatim. Directory name kept as `gsd-debug/` to match upstream package — drift detection compares against the upstream `gsd-debug/SKILL.md` path.
 
 ## Superpowers — Jesse Vincent
 
