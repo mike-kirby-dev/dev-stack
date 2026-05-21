@@ -144,12 +144,91 @@ Each card contains:
 - On textarea input: update chat_more content in page state; show orange border if content present
 - "Save answers" button at top and bottom: serializes page state back to the JSON file path
 
-**Save mechanism:**
-The Save button writes the updated JSON back using the File System Access API if available, otherwise generates a downloadable JSON file the user can save over the original. Include clear instructions in the UI:
+**Save mechanism (POST-first, DEVMGMT-342):**
+
+The Save button POSTs the updated JSON to a server-side write-back endpoint
+first. If the POST fails (no endpoint configured, network down, server
+unreachable, auth mismatch), it falls back through the legacy chain:
+File System Access API → blob download → clipboard. The localStorage backup
+runs on every save regardless.
+
+**Step 1 — emit meta tags at HTML-generation time:**
+
+Before writing the `<body>`, the generator MUST emit these two `<meta>` tags
+inside `<head>`:
+
+```html
+<meta name="discuss-write-endpoint" content="/api/save/<URL_PATH>">
+<meta name="discuss-write-secret"   content="<SECRET>">
+```
+
+- `<URL_PATH>` is the `.json` companion of the HTML URL. The HTML lives at
+  `{phase_dir}/{padded_phase}-QUESTIONS.html` and the URL path is
+  `<ns>/<proj>/<phase_slug>/{padded_phase}-QUESTIONS.html`. The endpoint
+  is the same path with `.html` → `.json`.
+- `<SECRET>` is read from `/root/komodo/stacks/discuss-static/.env` at
+  generation time. Specifically: open the file, find the
+  `DISCUSS_WRITE_SECRET=` line, take everything after the `=`, trim
+  whitespace, and inject it as the `content` value.
+- **Fail gracefully:** if `/root/komodo/stacks/discuss-static/.env` is
+  unreadable, doesn't contain `DISCUSS_WRITE_SECRET=`, or the value is
+  empty, OMIT both meta tags entirely. The HTML's `saveAnswers()` will
+  detect missing tags and skip straight to the fallback chain.
+- **NEVER hardcode the secret value in this skill prompt** — read it
+  fresh from disk on each generation.
+
+**Step 2 — saveAnswers() JS shape:**
+
+```js
+async function saveAnswers() {
+  const state = serializeState();            // build the full JSON object
+  const json = JSON.stringify(state, null, 2);
+
+  // Backup to localStorage on every save (belt-and-braces).
+  try { localStorage.setItem('discuss-state-' + PHASE_KEY, json); } catch (_) {}
+
+  // POST-first save path.
+  const ep = document.querySelector('meta[name="discuss-write-endpoint"]')?.content;
+  const secret = document.querySelector('meta[name="discuss-write-secret"]')?.content;
+  if (ep && secret) {
+    try {
+      const r = await fetch(ep, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + secret,
+          'Content-Type': 'application/json'
+        },
+        body: json
+      });
+      if (r.ok) {
+        showToast('Saved to server ✓ — say "finalize" in chat');
+        return;
+      }
+      // 4xx/5xx → fall through to fallback chain
+      console.warn('POST save failed:', r.status, await r.text());
+    } catch (err) {
+      console.warn('POST save errored:', err);
+    }
+  }
+
+  // Fallback chain (existing behaviour — DO NOT remove):
+  //   1. showSaveFilePicker (File System Access API) if available
+  //   2. blob URL + download attribute
+  //   3. clipboard copy + modal with instructions
+  await saveViaFallbackChain(json);
+}
+```
+
+`saveViaFallbackChain` keeps the pre-DEVMGMT-342 behaviour. The toast
+shown by the success branch tells the user the file is already written
+server-side — no need to paste back to Claude.
+
+Include clear instructions in the UI for both happy and fallback paths:
 
 ```
-After answering, click "Save answers" — or download the JSON and replace the original file.
-Then return to Claude and say "refresh" to process your answers.
+Click "Save answers". If you see "Saved to server ✓", you're done — say
+"finalize" in chat. If the save falls back to a download or clipboard,
+follow those instructions instead.
 ```
 
 **Answered question styling:**
