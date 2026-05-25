@@ -56,7 +56,19 @@ Set `TEXT_MODE=true` if `--text` is present in $ARGUMENTS OR `text_mode` from in
 
 Extract `--prd <filepath>` from $ARGUMENTS. If present, set PRD_FILE to the filepath.
 
-**If no phase number:** Detect next unplanned phase from roadmap.
+**If no phase number:** Detect next unplanned phase. Resolution order (DEVMGMT-345):
+
+1. **Spawn marker** — if `.planning/.woz-spawned` exists AND contains a non-null `next_phase_number`, use that value. This is the authoritative source for spawn-driven phase tickets — the spawn pipeline computed it from the milestone branch's tip before the worktree was created, so it survives across two near-simultaneous spawns racing for the same number.
+   ```bash
+   spawn_marker=".planning/.woz-spawned"
+   if [ -f "$spawn_marker" ]; then
+     spawn_next=$(jq -r '.next_phase_number // empty' "$spawn_marker" 2>/dev/null)
+     if [ -n "$spawn_next" ] && [ "$spawn_next" != "null" ]; then
+       phase_number="$spawn_next"
+     fi
+   fi
+   ```
+2. **ROADMAP.md fallback** — if step 1 didn't produce a number (standalone ticket, no spawn, or marker absent), detect next unplanned phase from ROADMAP.md (legacy behaviour).
 
 **If `phase_found` is false:** Validate phase exists in ROADMAP.md. If valid, create the directory using `phase_slug` and `padded_phase` from init:
 ```bash
