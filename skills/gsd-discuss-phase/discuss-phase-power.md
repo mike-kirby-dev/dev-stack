@@ -144,6 +144,43 @@ Each card contains:
 - On textarea input: update chat_more content in page state; show orange border if content present
 - "Save answers" button at top and bottom: serializes page state back to the JSON file path
 
+**Mobile responsive (REQUIRED — DEVMGMT-341):**
+
+Mike answers questions from his phone as often as his laptop. The HTML MUST
+include the viewport meta tag AND a `@media (max-width: 768px)` block that
+collapses the 3-column grid to single-column and bumps font/touch sizes.
+This is NOT optional and NOT cosmetic — it's a load-bearing UX requirement.
+
+Required in `<head>` (alongside the discuss-write-* meta tags from Step 1):
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1">
+```
+
+Required in the inline `<style>`:
+
+```css
+@media (max-width: 768px) {
+  body { padding: 16px; font-size: 16px; }
+  h1 { font-size: 24px; }
+  h2 { font-size: 19px; }
+  /* collapse question-card grid to single column */
+  .cards, .questions, .grid { grid-template-columns: 1fr !important; }
+  /* roomier touch targets */
+  .card { padding: 18px; }
+  .qtitle { font-size: 17px; }
+  .option-label { font-size: 16px; }
+  textarea { font-size: 16px; min-height: 80px; }
+  button { font-size: 16px; padding: 12px 18px; }
+}
+```
+
+Adjust the selector names in the `@media` block to whatever the rest of the
+inline CSS actually uses (e.g. if the grid container is `.question-grid`,
+use that name) — what matters is that the 3-column grid collapses to 1fr
+on `max-width: 768px`. Test the generated HTML at iPhone width before
+finalising the file.
+
 **Save mechanism (POST-first, DEVMGMT-342):**
 
 The Save button POSTs the updated JSON to a server-side write-back endpoint
