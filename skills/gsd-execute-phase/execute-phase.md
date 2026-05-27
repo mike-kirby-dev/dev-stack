@@ -664,8 +664,15 @@ Execute each selected wave in sequence. Within a wave: parallel if `PARALLELIZAT
          git merge "$WT_BRANCH" --no-edit -m "chore: merge rescued SUMMARY.md from executor worktree ($WT_BRANCH)" 2>/dev/null || true
        fi
 
-       # Remove the worktree
-       git worktree remove "$WT" --force 2>/dev/null || true
+       # Remove the worktree.
+       # Claude Code creates worktrees with --lock, so `--force` alone refuses
+       # to remove them (silently, when stderr is swallowed). Unlock first,
+       # then force-remove. If removal still fails, log to stderr instead of
+       # silently swallowing so future leaks are detectable (DEVMGMT-366).
+       git worktree unlock "$WT" 2>/dev/null || true
+       if ! git worktree remove "$WT" --force 2>/dev/null; then
+         echo "WARN: failed to remove worktree $WT (may leak — see DEVMGMT-365)" >&2
+       fi
 
        # Delete the temporary branch
        git branch -D "$WT_BRANCH" 2>/dev/null || true
