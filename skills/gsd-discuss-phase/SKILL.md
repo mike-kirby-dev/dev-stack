@@ -67,5 +67,6 @@ If `DISCUSS_MODE` is `"discuss"` (or unset, or any other value): Read and execut
 - Each selected area explored until satisfied
 - Scope creep redirected to deferred ideas
 - CONTEXT.md captures decisions, not vague vision
+- Discuss artifacts (CONTEXT.md + DISCUSSION-LOG.md + QUESTIONS.json if power mode) committed to git before any stage transition
 - User knows next steps
 </success_criteria>

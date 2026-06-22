@@ -1188,13 +1188,35 @@ Write file.
 rm -f "${phase_dir}/${padded_phase}-DISCUSS-CHECKPOINT.json"
 ```
 
-Commit phase context and discussion log:
+**MANDATORY — commit discuss artifacts before any stage transition.**
+
+If a spawn dies between discuss finalize and the next stage (plan-phase /
+WAITING.json), uncommitted CONTEXT.md is permanently lost. This commit MUST
+happen before auto_advance or any WAITING.json write.
+
+Also include QUESTIONS.json if it exists (present when session started in
+`--power` mode and transitioned to interactive via "exit power mode"):
 
 ```bash
-gsd-sdk query commit "docs(${padded_phase}): capture phase context" "${phase_dir}/${padded_phase}-CONTEXT.md" "${phase_dir}/${padded_phase}-DISCUSSION-LOG.md"
+QUESTIONS_FILE=$(ls "${phase_dir}/${padded_phase}-QUESTIONS.json" 2>/dev/null || true)
 ```
 
-Confirm: "Committed: docs(${padded_phase}): capture phase context"
+Commit phase context, discussion log, and questions (if present):
+
+```bash
+if [ -n "$QUESTIONS_FILE" ]; then
+  gsd-sdk query commit "docs(${padded_phase}): finalize phase discuss answers" \
+    "${phase_dir}/${padded_phase}-CONTEXT.md" \
+    "${phase_dir}/${padded_phase}-DISCUSSION-LOG.md" \
+    "$QUESTIONS_FILE"
+else
+  gsd-sdk query commit "docs(${padded_phase}): finalize phase discuss answers" \
+    "${phase_dir}/${padded_phase}-CONTEXT.md" \
+    "${phase_dir}/${padded_phase}-DISCUSSION-LOG.md"
+fi
+```
+
+Confirm: "Committed discuss artifacts — answers are durable."
 </step>
 
 <step name="update_state">
