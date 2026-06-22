@@ -395,6 +395,44 @@ Next step: /gsd-plan-phase {N}
 ```
 </step>
 
+<step name="git_commit_power">
+**MANDATORY — commit discuss artifacts immediately after finalize.**
+
+If a spawn dies between finalize and the next stage (plan-phase), uncommitted
+QUESTIONS.json and CONTEXT.md are permanently lost. This commit makes answers
+durable before any stage transition (WAITING.json) can occur.
+
+Also generate DISCUSSION-LOG.md from the QUESTIONS.json answers (same format
+as the interactive mode's `git_commit` step in discuss-phase.md — one table
+per section, options presented vs selected, chat_more notes).
+
+**File location:** `${phase_dir}/${padded_phase}-DISCUSSION-LOG.md`
+
+Write the file, then commit all three artifacts:
+
+```bash
+gsd-sdk query commit \
+  "docs(${padded_phase}): finalize phase discuss answers [power mode]" \
+  "${phase_dir}/${padded_phase}-QUESTIONS.json" \
+  "${phase_dir}/${padded_phase}-CONTEXT.md" \
+  "${phase_dir}/${padded_phase}-DISCUSSION-LOG.md"
+```
+
+Confirm: "Committed discuss artifacts — answers are durable."
+
+**Then update STATE.md** (same as interactive mode):
+
+```bash
+gsd-sdk query state.record-session \
+  --stopped-at "Phase ${PHASE} context gathered (power mode)" \
+  --resume-file "${phase_dir}/${padded_phase}-CONTEXT.md"
+```
+
+```bash
+gsd-sdk query commit "docs(state): record phase ${PHASE} context session" .planning/STATE.md
+```
+</step>
+
 <success_criteria>
 - Questions generated into well-structured JSON covering all identified gray areas
 - HTML companion file is self-contained and usable without a server
@@ -403,5 +441,7 @@ Next step: /gsd-plan-phase {N}
 - CONTEXT.md generated in the same format as standard discuss-phase output
 - Unanswered questions preserved as deferred items (not silently dropped)
 - `canonical_refs` section always present in CONTEXT.md (MANDATORY)
+- QUESTIONS.json + CONTEXT.md + DISCUSSION-LOG.md committed to git after finalize (answers survive spawn death)
+- STATE.md updated and committed after finalize
 - User knows how to refresh, finalize, explain, or exit power mode
 </success_criteria>
