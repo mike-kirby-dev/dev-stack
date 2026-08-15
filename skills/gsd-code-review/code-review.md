@@ -203,7 +203,12 @@ If no SUMMARY.md files found OR no files extracted from them:
 ```bash
 if [ ${#REVIEW_FILES[@]} -eq 0 ]; then
   # Compute diff base from phase commits — fail closed if no reliable base found
-  PHASE_COMMITS=$(git log --oneline --all --grep="${PADDED_PHASE}" --format="%H" 2>/dev/null)
+  # Anchor to the conventional-commit scope: a bare grep for "16" matches those
+  # digits anywhere in a subject (other phase numbers, ticket refs like
+  # BEINGSOFT-79, decision IDs like D-16, prose). DIFF_BASE is taken from the
+  # OLDEST match, so one stray hit drags the base back by whole phases and
+  # floods the review scope. -E is required for the + / (...) / ? operators.
+  PHASE_COMMITS=$(git log -E --oneline --all --grep="^[a-z]+\(${PADDED_PHASE}(-[0-9]+)?\):" --format="%H" 2>/dev/null)
   
   if [ -n "$PHASE_COMMITS" ]; then
     DIFF_BASE=$(echo "$PHASE_COMMITS" | tail -1)^
@@ -320,7 +325,11 @@ REVIEW_PATH="${PHASE_DIR}/${PADDED_PHASE}-REVIEW.md"
 
 Compute DIFF_BASE for agent context (in case agent needs it):
 ```bash
-PHASE_COMMITS=$(git log --oneline --all --grep="${PADDED_PHASE}" --format="%H" 2>/dev/null)
+# Anchor to the conventional-commit scope — same reason as the Tier 3 fallback
+# above: an unanchored grep for the phase digits matches unrelated subjects, and
+# DIFF_BASE comes from the OLDEST match, so a single stray hit widens the diff
+# by whole phases. -E is required for the + / (...) / ? operators.
+PHASE_COMMITS=$(git log -E --oneline --all --grep="^[a-z]+\(${PADDED_PHASE}(-[0-9]+)?\):" --format="%H" 2>/dev/null)
 if [ -n "$PHASE_COMMITS" ]; then
   DIFF_BASE=$(echo "$PHASE_COMMITS" | tail -1)^
 else
