@@ -5,9 +5,9 @@ You are a thinking partner, not an interviewer. The user is the visionary — yo
 </purpose>
 
 <required_reading>
-@$HOME/.claude/get-shit-done/references/domain-probes.md
-@$HOME/.claude/get-shit-done/references/gate-prompts.md
-@$HOME/.claude/get-shit-done/references/universal-anti-patterns.md
+@~/.claude/gsd-core/references/domain-probes.md
+@~/.claude/gsd-core/references/gate-prompts.md
+@~/.claude/gsd-core/references/universal-anti-patterns.md
 </required_reading>
 
 <downstream_awareness>
@@ -168,7 +168,7 @@ Exit workflow.
 
 **Power mode** — If `--power` is present in ARGUMENTS:
 - Skip interactive questioning entirely
-- Read and execute @$HOME/.claude/get-shit-done/workflows/discuss-phase-power.md end-to-end
+- Read and execute @~/.claude/gsd-core/workflows/discuss-phase-power.md end-to-end
 - Do not continue with the steps below
 
 **All mode** — If `--all` is present in ARGUMENTS:
@@ -507,7 +507,7 @@ Check if advisor mode should activate:
 
 1. Check for USER-PROFILE.md:
    ```bash
-   PROFILE_PATH="$HOME/.claude/get-shit-done/USER-PROFILE.md"
+   PROFILE_PATH="$HOME/.claude/gsd-core/USER-PROFILE.md"
    ```
    ADVISOR_MODE = file exists at PROFILE_PATH → true, otherwise → false
 
@@ -533,7 +533,7 @@ If ADVISOR_MODE is false, skip all advisor-specific steps — workflow proceeds 
 Check USER-PROFILE.md for communication preferences that indicate a non-technical product owner:
 
 ```bash
-PROFILE_CONTENT=$(cat "$HOME/.claude/get-shit-done/USER-PROFILE.md" 2>/dev/null || true)
+PROFILE_CONTENT=$(cat "$HOME/.claude/gsd-core/USER-PROFILE.md" 2>/dev/null || true)
 ```
 
 Set NON_TECHNICAL_OWNER = true if ANY of the following are present in USER-PROFILE.md:
@@ -1314,7 +1314,7 @@ When `--power` flag is present in ARGUMENTS, skip interactive questioning and ex
 
 The power user mode generates ALL questions upfront into machine-readable and human-friendly files, then waits for the user to answer at their own pace before processing all answers in a single pass.
 
-**Full step-by-step instructions:** @$HOME/.claude/get-shit-done/workflows/discuss-phase-power.md
+**Full step-by-step instructions:** @~/.claude/gsd-core/workflows/discuss-phase-power.md
 
 **Summary of flow:**
 1. Run the same phase analysis (gray area identification) as standard mode

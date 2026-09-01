@@ -15,7 +15,7 @@ allowed-tools:
   - mcp__context7__*
 ---
 
-<!-- modified from /root/.claude/get-shit-done/skills/gsd-plan-phase/SKILL.md under MIT license; modifications: see ATTRIBUTIONS.md -->
+<!-- modified from get-shit-done (gsd-build/get-shit-done, archived 2026-06-26) skills/gsd-plan-phase/SKILL.md under MIT license; workflow bodies now resolve from @opengsd/gsd-core. modifications: see ATTRIBUTIONS.md -->
 
 <objective>
 Create executable phase prompts (PLAN.md files) for a roadmap phase with integrated research and verification.
@@ -26,8 +26,8 @@ Create executable phase prompts (PLAN.md files) for a roadmap phase with integra
 </objective>
 
 <execution_context>
-@$HOME/.claude/get-shit-done/workflows/plan-phase.md
-@$HOME/.claude/get-shit-done/references/ui-brand.md
+To load this command's workflow spec: check for `.claude/gsd-core/workflows/plan-phase.md` relative to the current working directory first (project-local); if it is not there, fall back to `~/.claude/gsd-core/workflows/plan-phase.md` (the global install). If neither file exists, stop — a workflow spec is required and none was found.
+@~/.claude/gsd-core/references/ui-brand.md
 </execution_context>
 
 <runtime_note>
@@ -50,6 +50,6 @@ Normalize phase input in step 2 before any directory lookups.
 </context>
 
 <process>
-Execute the plan-phase workflow from @$HOME/.claude/get-shit-done/workflows/plan-phase.md end-to-end.
+Execute the plan-phase workflow (resolved per <execution_context> above) end-to-end.
 Preserve all workflow gates (validation, research, planning, verification loop, routing).
 </process>
