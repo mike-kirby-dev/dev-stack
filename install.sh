@@ -200,5 +200,35 @@ build_browse() {
 
 build_browse
 
+# --- impeccable (third-party design quality skill) ----------------------------
+
+install_impeccable() {
+    local impeccable_dir="$HOME/.claude/skills/impeccable"
+
+    if [ -d "$impeccable_dir" ] && [ -f "$impeccable_dir/SKILL.md" ]; then
+        echo ""
+        echo "impeccable: already installed at $impeccable_dir — skipping."
+        return 0
+    fi
+
+    echo ""
+    echo "impeccable: installing design quality skill..."
+
+    if ! command -v npx >/dev/null 2>&1; then
+        echo "WARN   impeccable: npx not found on PATH. Install Node.js first." >&2
+        echo "WARN   impeccable: skipping install (design quality skill will not be available)." >&2
+        return 0
+    fi
+
+    if npx --yes impeccable install --providers=claude --scope=global 2>&1; then
+        echo "impeccable: installed successfully."
+    else
+        echo "WARN   impeccable: install failed. Run manually: npx impeccable install --providers=claude --scope=global" >&2
+        return 0
+    fi
+}
+
+install_impeccable
+
 echo ""
 echo "Done."
