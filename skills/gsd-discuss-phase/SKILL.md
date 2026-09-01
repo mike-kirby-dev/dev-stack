@@ -14,7 +14,7 @@ allowed-tools:
   - mcp__context7__query-docs
 ---
 
-<!-- modified from /root/.claude/get-shit-done/skills/gsd-discuss-phase/SKILL.md under MIT license; modifications: see ATTRIBUTIONS.md -->
+<!-- modified from get-shit-done (gsd-build/get-shit-done, archived 2026-06-26) skills/gsd-discuss-phase/SKILL.md under MIT license; workflow bodies now resolve from @opengsd/gsd-core. modifications: see ATTRIBUTIONS.md -->
 
 <objective>
 Extract implementation decisions that downstream agents need — researcher and planner will use CONTEXT.md to know what to investigate and what choices are locked.
@@ -31,10 +31,8 @@ Extract implementation decisions that downstream agents need — researcher and 
 </objective>
 
 <execution_context>
-@$HOME/.claude/get-shit-done/workflows/discuss-phase.md
-@$HOME/.claude/get-shit-done/workflows/discuss-phase-assumptions.md
-@$HOME/.claude/get-shit-done/workflows/discuss-phase-power.md
-@$HOME/.claude/get-shit-done/templates/context.md
+To load this command's workflow spec: check for `.claude/gsd-core/workflows/discuss-phase.md` relative to the current working directory first (project-local); if it is not there, fall back to `~/.claude/gsd-core/workflows/discuss-phase.md` (the global install). If neither file exists, stop — a workflow spec is required and none was found.
+@~/.claude/gsd-core/templates/context.md
 </execution_context>
 
 <runtime_note>
@@ -53,9 +51,9 @@ Context files are resolved in-workflow using `init phase-op` and roadmap/state t
 DISCUSS_MODE=$(gsd-sdk query config-get workflow.discuss_mode 2>/dev/null || echo "discuss")
 ```
 
-If `DISCUSS_MODE` is `"assumptions"`: Read and execute @$HOME/.claude/get-shit-done/workflows/discuss-phase-assumptions.md end-to-end.
+If `DISCUSS_MODE` is `"assumptions"`: Read and execute @~/.claude/gsd-core/workflows/discuss-phase-assumptions.md end-to-end.
 
-If `DISCUSS_MODE` is `"discuss"` (or unset, or any other value): Read and execute @$HOME/.claude/get-shit-done/workflows/discuss-phase.md end-to-end.
+If `DISCUSS_MODE` is `"discuss"` (or unset, or any other value): Read and execute @~/.claude/gsd-core/workflows/discuss-phase.md end-to-end.
 
 **MANDATORY:** The execution_context files listed above ARE the instructions. Read the workflow file BEFORE taking any action. The objective and success_criteria sections in this command file are summaries — the workflow file contains the complete step-by-step process with all required behaviors, config checks, and interaction patterns. Do not improvise from the summary.
 </process>

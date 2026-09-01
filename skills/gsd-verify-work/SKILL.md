@@ -12,7 +12,7 @@ allowed-tools:
   - Task
 ---
 
-<!-- modified from /root/.claude/get-shit-done/skills/gsd-verify-work/SKILL.md under MIT license; modifications: see ATTRIBUTIONS.md -->
+<!-- modified from get-shit-done (gsd-build/get-shit-done, archived 2026-06-26) skills/gsd-verify-work/SKILL.md under MIT license; workflow bodies now resolve from @opengsd/gsd-core. modifications: see ATTRIBUTIONS.md -->
 
 <objective>
 Validate built features through conversational testing with persistent state.
@@ -23,8 +23,8 @@ Output: {phase_num}-UAT.md tracking all test results. If issues found: diagnosed
 </objective>
 
 <execution_context>
-@$HOME/.claude/get-shit-done/workflows/verify-work.md
-@$HOME/.claude/get-shit-done/templates/UAT.md
+To load this command's workflow spec: check for `.claude/gsd-core/workflows/verify-work.md` relative to the current working directory first (project-local); if it is not there, fall back to `~/.claude/gsd-core/workflows/verify-work.md` (the global install). If neither file exists, stop — a workflow spec is required and none was found.
+@~/.claude/gsd-core/templates/UAT.md
 </execution_context>
 
 <context>
@@ -36,6 +36,6 @@ Context files are resolved inside the workflow (`init verify-work`) and delegate
 </context>
 
 <process>
-Execute the verify-work workflow from @$HOME/.claude/get-shit-done/workflows/verify-work.md end-to-end.
+Execute the verify-work workflow (resolved per <execution_context> above) end-to-end.
 Preserve all workflow gates (session management, test presentation, diagnosis, fix planning, routing).
 </process>

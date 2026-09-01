@@ -24,7 +24,11 @@ trap 'rm -rf "$REPORT_DIR"' EXIT
 # Each upstream: name, repo URL, list of forked-files (local-path:upstream-path pairs).
 declare -A UPSTREAM_URL=(
     [gstack]="https://github.com/garrytan/gstack.git"
-    [gsd]="https://github.com/gsd-build/get-shit-done.git"
+    # gsd-build/get-shit-done was ARCHIVED 2026-06-26; the runtime migrated to
+    # @opengsd/gsd-core 1.12.0 (DEVMGMT-466). Polling the archived repo can only
+    # ever report "no drift" — a permanently green check is not a check.
+    # GSD_FILES is empty, so this URL is currently unused either way.
+    [gsd]="https://github.com/open-gsd/gsd-core.git"
     [superpowers]="https://github.com/obra/superpowers.git"
 )
 

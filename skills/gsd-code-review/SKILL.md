@@ -11,7 +11,7 @@ allowed-tools:
   - Task
 ---
 
-<!-- modified from /root/.claude/get-shit-done/skills/gsd-code-review/SKILL.md under MIT license; modifications: see ATTRIBUTIONS.md -->
+<!-- modified from get-shit-done (gsd-build/get-shit-done, archived 2026-06-26) skills/gsd-code-review/SKILL.md under MIT license; workflow bodies now resolve from @opengsd/gsd-core. modifications: see ATTRIBUTIONS.md -->
 
 <objective>
 Review source files changed during a phase for bugs, security vulnerabilities, and code quality problems.
@@ -30,7 +30,7 @@ Output: {padded_phase}-REVIEW.md in phase directory + inline summary of findings
 </objective>
 
 <execution_context>
-@$HOME/.claude/get-shit-done/workflows/code-review.md
+To load this command's workflow spec: check for `.claude/gsd-core/workflows/code-review.md` relative to the current working directory first (project-local); if it is not there, fall back to `~/.claude/gsd-core/workflows/code-review.md` (the global install). If neither file exists, stop — a workflow spec is required and none was found.
 </execution_context>
 
 <context>
@@ -46,7 +46,7 @@ Context files (CLAUDE.md, SUMMARY.md, phase state) are resolved inside the workf
 <process>
 This command is a thin dispatch layer. It parses arguments and delegates to the workflow.
 
-Execute the code-review workflow from @$HOME/.claude/get-shit-done/workflows/code-review.md end-to-end.
+Execute the code-review workflow (resolved per <execution_context> above) end-to-end.
 
 The workflow (not this command) enforces these gates:
 - Phase validation (before config gate)

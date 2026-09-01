@@ -13,7 +13,7 @@ allowed-tools:
   - AskUserQuestion
 ---
 
-<!-- modified from /root/.claude/get-shit-done/skills/gsd-quick/SKILL.md under MIT license; modifications: see ATTRIBUTIONS.md -->
+<!-- modified from get-shit-done (gsd-build/get-shit-done, archived 2026-06-26) skills/gsd-quick/SKILL.md under MIT license; workflow bodies now resolve from @opengsd/gsd-core. modifications: see ATTRIBUTIONS.md -->
 
 <objective>
 Execute small, ad-hoc tasks with GSD guarantees (atomic commits, STATE.md tracking).
@@ -42,7 +42,7 @@ Granular flags are composable: `--discuss --research --validate` gives the same 
 </objective>
 
 <execution_context>
-@$HOME/.claude/get-shit-done/workflows/quick.md
+To load this command's workflow spec: check for `.claude/gsd-core/workflows/quick.md` relative to the current working directory first (project-local); if it is not there, fall back to `~/.claude/gsd-core/workflows/quick.md` (the global install). If neither file exists, stop — a workflow spec is required and none was found.
 </execution_context>
 
 <context>
@@ -156,7 +156,7 @@ When SUBCMD=resume and SLUG is set (already sanitized):
 
 When SUBCMD=run:
 
-Execute the quick workflow from @$HOME/.claude/get-shit-done/workflows/quick.md end-to-end.
+Execute the quick workflow (resolved per <execution_context> above) end-to-end.
 Preserve all workflow gates (validation, task description, planning, execution, state updates, commits).
 
 </process>

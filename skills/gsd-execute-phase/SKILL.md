@@ -14,7 +14,7 @@ allowed-tools:
   - AskUserQuestion
 ---
 
-<!-- modified from /root/.claude/get-shit-done/skills/gsd-execute-phase/SKILL.md under MIT license; modifications: see ATTRIBUTIONS.md -->
+<!-- modified from get-shit-done (gsd-build/get-shit-done, archived 2026-06-26) skills/gsd-execute-phase/SKILL.md under MIT license; workflow bodies now resolve from @opengsd/gsd-core. modifications: see ATTRIBUTIONS.md -->
 
 <objective>
 Execute all plans in a phase using wave-based parallel execution.
@@ -34,8 +34,8 @@ Context budget: ~15% orchestrator, 100% fresh per subagent.
 </objective>
 
 <execution_context>
-@$HOME/.claude/get-shit-done/workflows/execute-phase.md
-@$HOME/.claude/get-shit-done/references/ui-brand.md
+To load this command's workflow spec: check for `.claude/gsd-core/workflows/execute-phase.md` relative to the current working directory first (project-local); if it is not there, fall back to `~/.claude/gsd-core/workflows/execute-phase.md` (the global install). If neither file exists, stop — a workflow spec is required and none was found.
+@~/.claude/gsd-core/references/ui-brand.md
 </execution_context>
 
 <runtime_note>
@@ -61,6 +61,6 @@ Context files are resolved inside the workflow via `gsd-sdk query init.execute-p
 </context>
 
 <process>
-Execute the execute-phase workflow from @$HOME/.claude/get-shit-done/workflows/execute-phase.md end-to-end.
+Execute the execute-phase workflow (resolved per <execution_context> above) end-to-end.
 Preserve all workflow gates (wave execution, checkpoint handling, verification, state updates, routing).
 </process>

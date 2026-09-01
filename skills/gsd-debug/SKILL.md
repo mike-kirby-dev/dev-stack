@@ -9,7 +9,7 @@ allowed-tools:
   - AskUserQuestion
 ---
 
-<!-- modified from /root/.claude/get-shit-done/skills/gsd-debug/SKILL.md under MIT license; modifications: see ATTRIBUTIONS.md -->
+<!-- modified from get-shit-done (gsd-build/get-shit-done, archived 2026-06-26) skills/gsd-debug/SKILL.md under MIT license; workflow body is inlined in this file (no external workflow spec). modifications: see ATTRIBUTIONS.md -->
 
 > **Note on scope.** This skill diagnoses **UAT-gap and verification failures** (reads a `NN-UAT.md`, spawns a `gsd-debugger` subagent per gap, returns root causes, hands off to `plan-phase --gaps`). The upstream name `gsd-debug` was misleading — it sounds like a general debugger but isn't. The slash command is now `/gsd-diagnose-issues` to match the actual workflow. For general debugging (production crash, middleware misbehaving, hard bug with no UAT.md), use `sp-systematic-debugging` instead.
 

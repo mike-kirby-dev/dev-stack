@@ -12,7 +12,7 @@ allowed-tools:
   - Task
 ---
 
-<!-- modified from /root/.claude/get-shit-done/skills/gsd-code-review-fix/SKILL.md under MIT license; modifications: see ATTRIBUTIONS.md -->
+<!-- modified from get-shit-done (gsd-build/get-shit-done, archived 2026-06-26) skills/gsd-code-review-fix/SKILL.md under MIT license; workflow bodies now resolve from @opengsd/gsd-core. modifications: see ATTRIBUTIONS.md -->
 
 <objective>
 Auto-fix issues found by code review. Reads REVIEW.md from the specified phase, spawns gsd-code-fixer agent to apply fixes, and produces REVIEW-FIX.md summary.
@@ -26,7 +26,7 @@ Output: {padded_phase}-REVIEW-FIX.md in phase directory + inline summary of fixe
 </objective>
 
 <execution_context>
-@$HOME/.claude/get-shit-done/workflows/code-review-fix.md
+To load this command's workflow spec: check for `.claude/gsd-core/workflows/code-review-fix.md` relative to the current working directory first (project-local); if it is not there, fall back to `~/.claude/gsd-core/workflows/code-review-fix.md` (the global install). If neither file exists, stop — a workflow spec is required and none was found.
 </execution_context>
 
 <context>
@@ -42,7 +42,7 @@ Context files (CLAUDE.md, REVIEW.md, phase state) are resolved inside the workfl
 <process>
 This command is a thin dispatch layer. It parses arguments and delegates to the workflow.
 
-Execute the code-review-fix workflow from @$HOME/.claude/get-shit-done/workflows/code-review-fix.md end-to-end.
+Execute the code-review-fix workflow (resolved per <execution_context> above) end-to-end.
 
 The workflow (not this command) enforces these gates:
 - Phase validation (before config gate)
